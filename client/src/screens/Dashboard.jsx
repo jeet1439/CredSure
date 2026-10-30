@@ -408,34 +408,6 @@ function Stat({ label, value }) {
   );
 }
 
-function ApprovalOutlook({ probability, active }) {
-  const values = [18, 25, 22, 34, 30, 43, 48, 45, 57, 62, 68, 73];
-  const line = values.map((value, index) => `${index ? "L" : "M"} ${12 + index * 25} ${102 - value}`).join(" ");
-  const area = `${line} L 287 112 L 12 112 Z`;
-  const markerX = 12 + clamp(probability, 0, 1) * 275;
-  const markerY = 102 - (18 + clamp(probability, 0, 1) * 58);
-
-  return (
-    <section className="mt-6 rounded-xl border border-[#c7ddf7] bg-[#f7fbff] p-4" aria-label="Approval outlook chart">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-display text-sm font-semibold text-[#13233e]">Approval outlook</h3>
-          <p className="mt-0.5 text-xs text-[#6b7f9e]">Illustrative probability trend</p>
-        </div>
-        <span className="rounded-full bg-[#e3f0ff] px-2.5 py-1 text-xs font-semibold text-[#0963d7]">Last 12 checks</span>
-      </div>
-      <svg viewBox="0 0 300 132" className="mt-3 h-auto w-full" role="img" aria-label={active ? `Approval probability is ${pct(probability)}` : "Approval probability trend awaiting a check"}>
-        <defs><linearGradient id="approval-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#1d7dec" stopOpacity=".25" /><stop offset="100%" stopColor="#1d7dec" stopOpacity="0" /></linearGradient></defs>
-        {[28, 56, 84, 112].map((y) => <line key={y} x1="12" x2="287" y1={y} y2={y} stroke="#cfe1f5" strokeDasharray="3 4" />)}
-        <path d={area} fill="url(#approval-fill)" />
-        <path d={line} fill="none" stroke="#1670df" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-        {active && <><line x1={markerX} x2={markerX} y1="18" y2="112" stroke="#0963d7" strokeDasharray="3 3" /><circle cx={markerX} cy={markerY} r="5" fill="white" stroke="#0963d7" strokeWidth="3" /></>}
-        <text x="12" y="128" fill="#8091aa" fontSize="9">Earlier</text><text x="255" y="128" fill="#8091aa" fontSize="9">Today</text>
-      </svg>
-    </section>
-  );
-}
-
 function ResultPanel({ status, result, error, values, history, onRetry, onLoad }) {
   const thresholds = result?.thresholds ?? DEFAULT_THRESHOLDS;
   const model = result?.model ?? MODEL_INFO;
@@ -537,8 +509,6 @@ function ResultPanel({ status, result, error, values, history, onRetry, onLoad }
           </section>
         </>
       )}
-
-      <ApprovalOutlook probability={result?.probability ?? 0} active={done} />
 
       {history.length > 0 && (
         <section className="mt-6 border-t border-[#dbe8f7] pt-4 lg:hidden">
