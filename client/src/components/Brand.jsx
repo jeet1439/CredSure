@@ -1,4 +1,4 @@
-import brandIcon from "../assets/icon.png";
+import brandIcon from "../assets/icon2.png";
 
 export function Arrow() {
   return (
